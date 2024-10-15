@@ -44,7 +44,7 @@
             align-items: center;
             height: 90vh;
             margin: 0;
-            font-family:  Segoe UI , Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .container {
@@ -173,18 +173,18 @@
     document.getElementById("loader").style.display = "none";
   };
 
-    const inputField = document.getElementById( correct-answers );
-    const checkButton = document.getElementById( check-button );
-    const popup = document.getElementById( popup );
-    const popupMessage = document.getElementById( popup-message );
-    const closePopupButton = document.getElementById( close-popup );
-    const errorMessage = document.getElementById( error-message );
+    const inputField = document.getElementById('correct-answers');
+    const checkButton = document.getElementById('check-button');
+    const popup = document.getElementById('popup');
+    const popupMessage = document.getElementById('popup-message');
+    const closePopupButton = document.getElementById('close-popup');
+    const errorMessage = document.getElementById('error-message');
 
-    checkButton.addEventListener( click , function() {
+    checkButton.addEventListener('click', function() {
         const value = parseInt(inputField.value);
         if (value >= 1 && value <= 20) {
-            inputField.classList.remove( error );
-            errorMessage.style.display =  none ;
+            inputField.classList.remove('error');
+            errorMessage.style.display = 'none';
             
             setTimeout(() => {
                 if (value >= 1 && value <= 4) {
@@ -199,21 +199,21 @@
                     popupMessage.textContent = " أنت الاكثر تفوقا! ابدأ من الوحدة الخامسة وفي الطريق خظ نظرة عن الوحدات السابقة اذا كان لديك بعض الوقت";
                 }
                 
-                popup.classList.remove( hidden );
+                popup.classList.remove('hidden');
             }, 200);
         } else if (value > 20) {
-            inputField.classList.add( error );
-            errorMessage.style.display =  block ;
-            errorMessage.textContent =  ادخل رقم صالح يجب ان يكون من (1-20) ;
+            inputField.classList.add('error');
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = 'ادخل رقم صالح يجب ان يكون من (1-20)';
         } else {
-            inputField.classList.remove( error );
-            errorMessage.style.display =  none ;
+            inputField.classList.remove('error');
+            errorMessage.style.display = 'none';
         }
     });
 
-    closePopupButton.addEventListener( click , function() {
+    closePopupButton.addEventListener('click', function() {
     setTimeout(() => {
-        popup.classList.add( hidden );
+        popup.classList.add('hidden');
     }, 220); // تأخير بمقدار 200 ملي ثانية
 });
 </script>
