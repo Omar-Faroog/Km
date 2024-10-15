@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدخال عدد الأسئلة الصحيحة</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+#loader {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 9999;
+  width: 50px;
+  height: 50px;
+  margin: -25px 0 0 -25px; /* To center the loader */
+  border: 10px solid #ccc;
+  border-radius: 50%;
+  border-top: 8px solid #3498db;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Animation */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+        body {
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+            margin: 0;
+            font-family:  Segoe UI , Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        label {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input[type="number"] {
+            width: 400px;
+            height: 500px; /* لضبط حجم المربع */
+            padding: 10px;
+            border: 3px solid #E7E7E7;
+            border-radius: 16px;
+            background-color: #F7F7F7;
+            font-size: 30px;
+            outline: none;
+            transition: border-color 0.3s;
+            display: block;
+            margin: 0 auto;
+            text-align: center; /* تمركز النص */
+            vertical-align: middle; /* النص يبدأ من منتصف المربع */
+        }
+
+        input[type="number"]:focus {
+            border-color: #58CC02;
+        }
+
+        input[type="number"].error {
+            border-color: red;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        button {
+            background-color: #58CC02;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 8px 180px;
+            cursor: pointer;
+            font-size: 18px;
+            position: relative; /* وضعية الزر ليست ثابتة هنا */
+            margin-top: 50px; /* لإضافة مسافة بين الزر والمدخل */
+            box-shadow: 0 4px 0 #58A700; /* إضافة ظل */
+            transition: all 0.1s ease; /* تأثير الانتقال */
+            outline: none; /* إزالة تأثير التحديد */
+            -webkit-tap-highlight-color: transparent; /* إزالة تأثير التمييز في الهواتف المحمولة */
+        }
+
+        button:active {
+            box-shadow: 0 0px 0 #79B933; /* تغيير الظل عند الضغط */
+            transform: translateY(4px); /* تحريك الزر 4px للأسفل عند الضغط */
+        }
+
+        .popup {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #F7F7F7;
+            border: 2px solid #E7E7E7;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .popup-content {
+            margin-bottom: 20px;
+        }
+
+        .popup.hidden {
+            display: none;
+        }
+
+        #close-popup {
+            background-color: #1CB0F6;
+            color: white;
+            padding: 7px 110px;
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 4px 0 #1899D6;
+            transition: all 0.1s ease; /* تأثير الانتقال */
+            outline: none; /* إزالة تأثير التحديد */
+            -webkit-tap-highlight-color: transparent;
+            cursor: pointer;
+        }
+
+        #close-popup:active {
+            box-shadow: 0 0px 0 #79B933;
+            transform: translateY(4px); /* تحريك الزر 4px للأسفل عند الضغط */
+        }
+    </style>
+</head>
+<body>
+
+<div id="loader"></div>
+
+<div class="container">
+    <label for="correct-answers">كم عدد الاسألة التي اجبت عليها؟</label>
+    <input type="number" id="correct-answers" min="1" max="20" placeholder="ادخل عدد الأسئلة هنا">
+    <p id="error-message" class="error-message"></p>
+    <button id="check-button">تحقّق</button>
+</div>
+
+<div id="popup" class="popup hidden">
+    <div class="popup-content">
+        <p id="popup-message"></p>
+        <button id="close-popup">فهمت</button>
+    </div>
+</div>
+
+<script>
+  window.onload = function() {
+    document.getElementById("loader").style.display = "none";
+  };
+
+    const inputField = document.getElementById( correct-answers );
+    const checkButton = document.getElementById( check-button );
+    const popup = document.getElementById( popup );
+    const popupMessage = document.getElementById( popup-message );
+    const closePopupButton = document.getElementById( close-popup );
+    const errorMessage = document.getElementById( error-message );
+
+    checkButton.addEventListener( click , function() {
+        const value = parseInt(inputField.value);
+        if (value >= 1 && value <= 20) {
+            inputField.classList.remove( error );
+            errorMessage.style.display =  none ;
+            
+            setTimeout(() => {
+                if (value >= 1 && value <= 4) {
+                    popupMessage.textContent = "يجب أن تبدأ من الوحدة الأولى. استمر فأنت رائع";
+                } else if (value >= 5 && value <= 9) {
+                    popupMessage.textContent = "أنت على الطريق الصحيح! ابدأ من الوحدة الثانية، وفي طريقك قم بالإطلاع على الوحدة الأولى";
+                } else if (value >= 10 && value <= 14) {
+                    popupMessage.textContent = "أنت في تقدم ممتاز! ابدأ من الوحدة الثالثة";
+                } else if (value >= 15 && value <= 19) {
+                    popupMessage.textContent = "رائع جداً! ابدأ من الوحدة الرابعة";
+                } else if (value === 20) {
+                    popupMessage.textContent = " أنت الاكثر تفوقا! ابدأ من الوحدة الخامسة وفي الطريق خظ نظرة عن الوحدات السابقة اذا كان لديك بعض الوقت";
+                }
+                
+                popup.classList.remove( hidden );
+            }, 200);
+        } else if (value > 20) {
+            inputField.classList.add( error );
+            errorMessage.style.display =  block ;
+            errorMessage.textContent =  ادخل رقم صالح يجب ان يكون من (1-20) ;
+        } else {
+            inputField.classList.remove( error );
+            errorMessage.style.display =  none ;
+        }
+    });
+
+    closePopupButton.addEventListener( click , function() {
+    setTimeout(() => {
+        popup.classList.add( hidden );
+    }, 220); // تأخير بمقدار 200 ملي ثانية
+});
+</script>
+
+</body>
+</html>
